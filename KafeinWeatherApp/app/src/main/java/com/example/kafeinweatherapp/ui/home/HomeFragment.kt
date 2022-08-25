@@ -44,25 +44,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var dailyForecastAdapter: WeatherDailyForecastAdapter
     private lateinit var weatherDetailedInfoAdapter: WeatherDetailedInfoAdapter
 
-    private val weatherDetailedInfoHashMap: HashMap<String, String> = HashMap()
-
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationCallback: LocationCallback
-    private lateinit var locationRequest: LocationRequest
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-
-    }
-
-
-
-
     private fun onSetWeatherDetailedInfoAdapter() {
         binding.rvDetailedWeatherInfoList.addItemDecoration(DividerItemDecoration(
             requireContext(),
@@ -101,9 +82,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         onSetHourlyForecastAdapter()
         onSetWeatherDetailedInfoAdapter()
 
-        binding.svWeatherFragmentScroll.viewTreeObserver.addOnScrollChangedListener(
+       /* binding.svWeatherFragmentScroll.viewTreeObserver.addOnScrollChangedListener(
             ScrollPositionObserver()
-        )
+        )*/
         viewModel.getWeather5DaysForecast(args.key).observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Resource.Status.LOADING -> {
@@ -173,7 +154,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         startActivity(intent)
     }
 
-    private inner class ScrollPositionObserver : ViewTreeObserver.OnScrollChangedListener {
+    /*private inner class ScrollPositionObserver : ViewTreeObserver.OnScrollChangedListener {
 
         private val mTopLayoutHeight: Int =
             resources.getDimensionPixelSize(R.dimen.top_layout_height)
@@ -191,7 +172,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.layoutWeatherFragmentTop.visibility = View.VISIBLE
 
         }
-    }
+    }*/
 
 
 }

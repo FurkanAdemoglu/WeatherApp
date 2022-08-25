@@ -24,4 +24,11 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.kafeinweatherapp.ui.search.SearchFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+    </fragment>
+
 </navigation>

@@ -2,6 +2,7 @@ package com.example.kafeinweatherapp.model.remote
 
 import com.example.kafeinweatherapp.model.entity.fivedayresponse.WeatherFiveDayResponse
 import com.example.kafeinweatherapp.model.entity.geopointresponse.GeoPositionResponse
+import com.example.kafeinweatherapp.model.entity.search.SearchResponse
 import com.example.kafeinweatherapp.model.entity.twelvehourresponse.WeatherTwelveHourResponse
 import com.example.kafeinweatherapp.utils.Constants.API_KEY
 import retrofit2.Response
@@ -19,5 +20,8 @@ interface ApiService {
 
     @GET("forecasts/v1/daily/5day/{key}")
     suspend fun getWeather5DaysForecast(@Path("key") key: String, @Query("apikey") apikey: String = API_KEY, @Query("details") details: String = "false", @Query("metric") metric: String = "false"): Response<WeatherFiveDayResponse>
+
+    @GET("/locations/v1/cities/autocomplete")
+    suspend fun search(@Query("apikey") apiKey: String = API_KEY, @Query("q") search: String): Response<SearchResponse>
 }
 

@@ -10,13 +10,12 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.kafeinweatherapp.R
 import com.example.kafeinweatherapp.databinding.FragmentSplashBinding
+import com.example.kafeinweatherapp.model.entity.geopointresponse.GeoPositionResponse
 import com.example.kafeinweatherapp.ui.base.BaseFragment
 import com.example.kafeinweatherapp.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,30 +67,27 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         viewModel.getLocationData("${viewModel.location?.latitude ?: 41},${viewModel.location?.longitude ?: 28}").observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Resource.Status.LOADING -> {
-
                 }
-                Resource.Status.SUCCESS -> {
-
-                    Log.v("getLocationData","${it.data}")
-                    /* val action =
-                         SplashFragmentDirections.actionSplashFragmentToListFragment(
-                             it.data?.accessToken
-                         )
-                     findNavController().navigate(action)*/
-
-                }
-                Resource.Status.ERROR -> {
-                    val dialog = AlertDialog.Builder(context)
-                        .setTitle("Error")
-                        .setMessage("${it.message}")
-                        .setPositiveButton("ok") { dialog, button ->
-                            dialog.dismiss()
-                        }
-                    dialog.show()
-                }
+                Resource.Status.SUCCESS -> success(it.data)
+                Resource.Status.ERROR -> showError(it.message)
             }
 
         })
+    }
+
+    private fun success(data: GeoPositionResponse?){
+        val action=SplashFragmentDirections.actionSplashFragmentToHomeFragment(data?.key?:"")
+        findNavController().navigate(action)
+    }
+
+    private fun showError(message:String?){
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("Error")
+            .setMessage("${message}")
+            .setPositiveButton("ok") { dialog, button ->
+                dialog.dismiss()
+            }
+        dialog.show()
     }
     private fun onPermissionGranted(){
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){

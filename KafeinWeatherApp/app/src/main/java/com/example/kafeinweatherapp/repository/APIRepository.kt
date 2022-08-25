@@ -11,6 +11,14 @@ class ApiRepository @Inject constructor(
         remoteDataSource.getLocationData(location)
     }
 
+    fun getWeather5DaysForecast(key:String) = performNetworkOperation {
+        remoteDataSource.getWeather5DaysForecast(key = key)
+    }
+
+    fun getWeather12HourlyForecast(key:String) = performNetworkOperation {
+        remoteDataSource.getWeather12HourlyForecast(key = key)
+    }
+
 
 
 }

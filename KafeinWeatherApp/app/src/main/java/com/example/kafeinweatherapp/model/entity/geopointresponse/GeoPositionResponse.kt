@@ -1,4 +1,4 @@
-package com.example.kafeinweatherapp.model.entity
+package com.example.kafeinweatherapp.model.entity.geopointresponse
 
 
 import com.google.gson.annotations.SerializedName

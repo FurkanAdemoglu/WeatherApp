@@ -1,13 +1,13 @@
-package com.example.kafeinweatherapp.model.entity
+package com.example.kafeinweatherapp.model.entity.twelvehourresponse
 
 
 import com.google.gson.annotations.SerializedName
 
-data class Imperial(
+data class SolarIrradiance(
     @SerializedName("Unit")
     val unit: String,
     @SerializedName("UnitType")
     val unitType: Int,
     @SerializedName("Value")
-    val value: Int
+    val value: Double
 )

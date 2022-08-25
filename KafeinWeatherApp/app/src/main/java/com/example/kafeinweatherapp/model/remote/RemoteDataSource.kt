@@ -10,4 +10,12 @@ class RemoteDataSource @Inject constructor(
     suspend fun getLocationData(location:String) = getResult {
         apiService.getLocationData(location = location)
     }
+
+    suspend fun getWeather12HourlyForecast(key:String) = getResult {
+        apiService.getWeather12HourlyForecast(key = key)
+    }
+    suspend fun getWeather5DaysForecast(key: String) = getResult {
+        apiService.getWeather5DaysForecast(key = key)
+    }
+
 }

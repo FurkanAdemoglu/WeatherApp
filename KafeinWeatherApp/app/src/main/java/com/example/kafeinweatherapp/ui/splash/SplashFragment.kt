@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.kafeinweatherapp.databinding.FragmentSplashBinding
 import com.example.kafeinweatherapp.model.entity.geopointresponse.GeoPositionResponse
+import com.example.kafeinweatherapp.model.local.SharedPrefManager
 import com.example.kafeinweatherapp.ui.base.BaseFragment
 import com.example.kafeinweatherapp.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -85,7 +86,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     }
 
     private fun success(data: GeoPositionResponse?){
-        val action=SplashFragmentDirections.actionSplashFragmentToHomeFragment(data?.key?:"",data?.localizedName)
+        SharedPrefManager(requireContext()).saveKey(data?.key?:"")
+        SharedPrefManager(requireContext()).saveCity(data?.localizedName?:"")
+        val action=SplashFragmentDirections.actionSplashFragmentToHomeFragment()
         findNavController().navigate(action)
     }
 

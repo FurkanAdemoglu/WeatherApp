@@ -19,16 +19,7 @@
         android:name="com.example.kafeinweatherapp.ui.home.HomeFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
-        <argument
-            android:name="key"
-            app:argType="string"
-            app:nullable="true"
-            />
-        <argument
-            android:name="cityName"
-            app:argType="string"
-            app:nullable="true"
-            />
+
     </fragment>
 
     <fragment

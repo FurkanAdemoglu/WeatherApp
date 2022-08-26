@@ -17,7 +17,6 @@ import com.example.kafeinweatherapp.databinding.FragmentHomeBinding
 import com.example.kafeinweatherapp.model.entity.fivedayresponse.WeatherFiveDayResponse
 import com.example.kafeinweatherapp.model.entity.twelvehourresponse.WeatherTwelveHourResponse
 import com.example.kafeinweatherapp.ui.base.BaseFragment
-import com.example.kafeinweatherapp.ui.home.HomeFragmentArgs
 import com.example.kafeinweatherapp.ui.home.HomeViewModel
 import com.example.kafeinweatherapp.ui.home.adapters.WeatherDailyForecastAdapter
 import com.example.kafeinweatherapp.ui.home.adapters.WeatherDetailedInfoAdapter
@@ -79,7 +78,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         /* binding.svWeatherFragmentScroll.viewTreeObserver.addOnScrollChangedListener(
              ScrollPositionObserver()
          )*/
-        viewModel.getWeather5DaysForecast(args.key?:"").observe(viewLifecycleOwner, Observer {
+        viewModel.getWeather5DaysForecast().observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Resource.Status.LOADING -> {
                 }
@@ -88,7 +87,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             }
 
         })
-        viewModel.getWeather12HourlyForecast(args.key?:"").observe(viewLifecycleOwner, Observer {
+        viewModel.getWeather12HourlyForecast().observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Resource.Status.LOADING -> {
                 }

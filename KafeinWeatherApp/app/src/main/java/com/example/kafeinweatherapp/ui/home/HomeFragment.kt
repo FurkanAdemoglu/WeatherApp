@@ -98,8 +98,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         })
         viewModel.getWeather12HourlyForecast(args.key?:"").observe(viewLifecycleOwner, Observer {
             when (it.status) {
-                Resource.Status.LOADING -> {
-                }
+                Resource.Status.LOADING -> {}
                 Resource.Status.SUCCESS -> showWeatherDataInfo(it.data)
                 Resource.Status.ERROR -> showError(it.message)
             }

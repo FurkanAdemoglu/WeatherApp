@@ -75,6 +75,15 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         })
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode,permissions,grantResults,this)
+    }
+
     private fun success(data: GeoPositionResponse?){
         val action=SplashFragmentDirections.actionSplashFragmentToHomeFragment(data?.key?:"",data?.localizedName)
         findNavController().navigate(action)

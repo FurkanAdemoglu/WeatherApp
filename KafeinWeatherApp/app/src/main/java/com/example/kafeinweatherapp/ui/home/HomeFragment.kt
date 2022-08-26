@@ -25,6 +25,7 @@ import com.example.kafeinweatherapp.databinding.FragmentSplashBinding
 import com.example.kafeinweatherapp.model.entity.fivedayresponse.DailyForecast
 import com.example.kafeinweatherapp.model.entity.fivedayresponse.WeatherFiveDayResponse
 import com.example.kafeinweatherapp.model.entity.twelvehourresponse.WeatherTwelveHourResponse
+import com.example.kafeinweatherapp.model.local.SharedPrefManager
 import com.example.kafeinweatherapp.ui.base.BaseFragment
 import com.example.kafeinweatherapp.ui.home.adapters.WeatherDailyForecastAdapter
 import com.example.kafeinweatherapp.ui.home.adapters.WeatherDetailedInfoAdapter
@@ -36,7 +37,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
-    private val args: HomeFragmentArgs by navArgs()
 
     private val viewModel: HomeViewModel by viewModels()
 
@@ -82,12 +82,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         onSetDailyForecastAdapter()
         onSetHourlyForecastAdapter()
         onSetWeatherDetailedInfoAdapter()
-        binding.tvWeatherFragmentCity.text = args.cityName
-        binding.tvWeatherFragmentTopCity.text = args.cityName
+        binding.tvWeatherFragmentCity.text = SharedPrefManager(requireContext()).getCity()
+        binding.tvWeatherFragmentTopCity.text = SharedPrefManager(requireContext()).getCity()
        /* binding.svWeatherFragmentScroll.viewTreeObserver.addOnScrollChangedListener(
             ScrollPositionObserver()
         )*/
-        viewModel.getWeather5DaysForecast(args.key?:"").observe(viewLifecycleOwner, Observer {
+        viewModel.getWeather5DaysForecast().observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Resource.Status.LOADING -> {
                 }
@@ -96,7 +96,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
 
         })
-        viewModel.getWeather12HourlyForecast(args.key?:"").observe(viewLifecycleOwner, Observer {
+        viewModel.getWeather12HourlyForecast().observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Resource.Status.LOADING -> {
                 }

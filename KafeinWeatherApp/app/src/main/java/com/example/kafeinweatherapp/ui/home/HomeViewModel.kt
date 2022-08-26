@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.kafeinweatherapp.model.entity.fivedayresponse.WeatherFiveDayResponse
 import com.example.kafeinweatherapp.model.entity.geopointresponse.GeoPositionResponse
 import com.example.kafeinweatherapp.model.entity.twelvehourresponse.WeatherTwelveHourResponse
+import com.example.kafeinweatherapp.model.local.LocalDataSource
 import com.example.kafeinweatherapp.repository.ApiRepository
 import com.example.kafeinweatherapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,13 +15,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel  @Inject constructor(
-    val savedStateHandle: SavedStateHandle,
-    val apiRepository: ApiRepository
+    val apiRepository: ApiRepository,
+    val localDataSource: LocalDataSource
 ) : ViewModel() {
 
 
-    fun getWeather5DaysForecast(key:String): LiveData<Resource<WeatherFiveDayResponse>> = apiRepository.getWeather5DaysForecast(key = key)
+    fun getWeather5DaysForecast(): LiveData<Resource<WeatherFiveDayResponse>> = apiRepository.getWeather5DaysForecast(localDataSource.getKey()?:"")
 
-    fun getWeather12HourlyForecast(key:String): LiveData<Resource<WeatherTwelveHourResponse>> = apiRepository.getWeather12HourlyForecast(key = key)
+    fun getWeather12HourlyForecast(): LiveData<Resource<WeatherTwelveHourResponse>> = apiRepository.getWeather12HourlyForecast(localDataSource.getKey()?:"")
 
 }

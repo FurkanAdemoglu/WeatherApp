@@ -1,6 +1,9 @@
 package com.example.kafeinweatherapp.di
 
+import android.content.Context
+import androidx.room.Room
 import com.example.kafeinweatherapp.BuildConfig
+import com.example.kafeinweatherapp.database.WordRoomDatabase
 import com.example.kafeinweatherapp.model.remote.ApiService
 import com.example.kafeinweatherapp.model.remote.RemoteDataSource
 import com.example.kafeinweatherapp.utils.Constants.BASE_URL
@@ -8,6 +11,7 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -72,6 +76,20 @@ class NetworkModule {
     private fun provideNoAuthOkHttpClient(okHttpClient: OkHttpClient): NoAuthOkHttpClient {
         return NoAuthOkHttpClient(okHttpClient)
     }
+
+    @Singleton // Tell Dagger-Hilt to create a singleton accessible everywhere in ApplicationCompenent (i.e. everywhere in the application)
+    @Provides
+    fun provideYourDatabase(
+        @ApplicationContext app: Context
+    ) = Room.databaseBuilder(
+        app,
+        WordRoomDatabase::class.java,
+        "word_database"
+    ).build() // The reason we can construct a database for the repo
+
+    @Singleton
+    @Provides
+    fun provideYourDao(db: WordRoomDatabase) = db.wordDao()
 }
 
 data class EndPoint(val url: String)

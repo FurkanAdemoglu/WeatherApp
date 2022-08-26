@@ -13,21 +13,36 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.kafeinweatherapp.databinding.FragmentSearchBinding
 import com.example.kafeinweatherapp.model.entity.search.SearchResponse
 import com.example.kafeinweatherapp.model.entity.search.SearchResponseItem
+import com.example.kafeinweatherapp.model.entity.searchedwords.Word
 import com.example.kafeinweatherapp.ui.base.BaseFragment
 import com.example.kafeinweatherapp.ui.home.HomeViewModel
 import com.example.kafeinweatherapp.ui.splash.SplashViewModel
 import com.example.kafeinweatherapp.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_search.*
 
 @AndroidEntryPoint
 class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
 
     private val viewModel: SearchViewModel by viewModels()
     lateinit var listAdapter: SearchAdapter
+    lateinit var searchedWordAdapter: SearchedWordAdapter
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        searchedWordAdapter = SearchedWordAdapter()
+        binding.searchedWords.apply {
+            adapter=searchedWordAdapter
+            layoutManager = LinearLayoutManager(activity)
+
+        }
+        searchedWordAdapter.setOnItemClickListener(object : IWordClickListener{
+            override fun onClick(name: Word) {
+                binding.etSearch.setQuery(name.word,true)
+            }
+
+        })
         setupRecyclerView()
         binding.etSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -43,10 +58,23 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-
+                if (newText.isNullOrEmpty()){
+                    listAdapter.differ.submitList(ArrayList())
+                    viewModel.allWords.observe(viewLifecycleOwner, Observer {
+                        searchedWordAdapter.submitList(it)
+                    })
+                    binding.searchedWords.visibility=View.VISIBLE
+                    binding.rvCountryCityList.visibility=View.GONE
+                }
                 return true
             }
         })
+        viewModel.allWords.observe(viewLifecycleOwner, Observer {
+            searchedWordAdapter.submitList(it)
+        })
+
+
+
     }
     private fun setupRecyclerView(){
         listAdapter= SearchAdapter()
@@ -55,9 +83,17 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
             layoutManager= LinearLayoutManager(activity)
 
         }
+
     }
 
     private fun onSuccessData(response:SearchResponse?){
+        if (response?.isEmpty()?:false){
+            binding.searchedWords.visibility=View.VISIBLE
+            binding.rvCountryCityList.visibility=View.GONE
+        }else{
+            binding.searchedWords.visibility=View.GONE
+            binding.rvCountryCityList.visibility=View.VISIBLE
+        }
         listAdapter.setOnItemClickListener(object : ICityClickListener {
             override fun onClick(name: SearchResponseItem) {
                 val action =SearchFragmentDirections.actionSplashFragmentToDetailFragment(name.key)

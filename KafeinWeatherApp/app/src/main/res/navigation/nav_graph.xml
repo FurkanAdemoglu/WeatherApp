@@ -21,7 +21,9 @@
         tools:layout="@layout/fragment_splash" >
         <argument
             android:name="key"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true"
+            />
     </fragment>
 
     <fragment
@@ -29,6 +31,21 @@
         android:name="com.example.kafeinweatherapp.ui.search.SearchFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.kafeinweatherapp.ui.detail.DetailFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <argument
+            android:name="key"
+            app:argType="string"
+            app:nullable="true"
+            />
     </fragment>
 
 </navigation>

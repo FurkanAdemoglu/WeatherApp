@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/accu_weather_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/weather_layout_background"
+    android:padding="8dp">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srWeatherFragmentRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingClass">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/svWeatherFragmentScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <LinearLayout
+                    android:id="@+id/layoutWeatherFragmentTopScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/top_layout_height"
+                    android:orientation="vertical"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="30dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/tvWeatherFragmentCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="28sp"
+                        tools:text="Almaty"
+                        android:textColor="@android:color/white"
+                        />
+                    <TextView
+                        android:id="@+id/tvWeatherFragmentPhrase"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        tools:text="Cloudy"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/ivWeatherFragmentIcon"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:scaleType="centerCrop"
+                            android:layout_marginEnd="4dp"
+                            tools:src="@drawable/ic_cloud_white"/>
+                        <TextView
+                            android:id="@+id/tvWeatherFragmentTemperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="110dp"
+                            android:gravity="center"
+                            android:layout_marginStart="4dp"
+                            android:textColor="@android:color/white"
+                            android:textSize="80sp"
+                            tools:text="1°"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@android:color/white"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hourly"
+                    android:textColor="@android:color/white"
+                    android:textAllCaps="true"
+                    android:textSize="18sp"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvHourlyForecastList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@android:color/white"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Daily"
+                    android:textColor="@android:color/white"
+                    android:textAllCaps="true"
+                    android:textSize="18sp"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvDailyForecastList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:padding="8dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@android:color/white"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Detailed"
+                    android:textColor="@android:color/white"
+                    android:textAllCaps="true"
+                    android:textSize="18sp"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvDetailedWeatherInfoList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutWeatherFragmentTop"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/top_layout_background"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/tvWeatherFragmentTopCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            tools:text="Almaty"
+            android:textColor="@android:color/white"
+            />
+        <TextView
+            android:id="@+id/tvWeatherFragmentTopPhrase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            tools:text="Cloudy"/>
+
+    </LinearLayout>
+
+    <!--<ProgressBar
+        android:id="@+id/weatherLoadingProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@android:color/white"
+        android:visibility="gone" />-->
+
+</RelativeLayout>
+

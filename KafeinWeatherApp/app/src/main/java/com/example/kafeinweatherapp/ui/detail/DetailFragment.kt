@@ -1,55 +1,48 @@
-package com.example.kafeinweatherapp.ui.home
+package com.example.kafeinweatherapp.ui.detail
 
-import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import com.example.kafeinweatherapp.R
-
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.kafeinweatherapp.R
+import com.example.kafeinweatherapp.databinding.FragmentDetailBinding
 import com.example.kafeinweatherapp.databinding.FragmentHomeBinding
-import com.example.kafeinweatherapp.databinding.FragmentSplashBinding
-import com.example.kafeinweatherapp.model.entity.fivedayresponse.DailyForecast
 import com.example.kafeinweatherapp.model.entity.fivedayresponse.WeatherFiveDayResponse
 import com.example.kafeinweatherapp.model.entity.twelvehourresponse.WeatherTwelveHourResponse
 import com.example.kafeinweatherapp.ui.base.BaseFragment
+import com.example.kafeinweatherapp.ui.home.HomeFragmentArgs
+import com.example.kafeinweatherapp.ui.home.HomeViewModel
 import com.example.kafeinweatherapp.ui.home.adapters.WeatherDailyForecastAdapter
 import com.example.kafeinweatherapp.ui.home.adapters.WeatherDetailedInfoAdapter
 import com.example.kafeinweatherapp.ui.home.adapters.WeatherHourlyForecastAdapter
 import com.example.kafeinweatherapp.utils.Constants
 import com.example.kafeinweatherapp.utils.Resource
-import com.google.android.gms.location.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
-    private val args: HomeFragmentArgs by navArgs()
+class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
+    private val args: DetailFragmentArgs by navArgs()
 
     private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var hourlyForecastAdapter: WeatherHourlyForecastAdapter
     private lateinit var dailyForecastAdapter: WeatherDailyForecastAdapter
     private lateinit var weatherDetailedInfoAdapter: WeatherDetailedInfoAdapter
-    private val weatherDetailedInfoHashMap: HashMap<String, String> = HashMap()
 
     private fun onSetWeatherDetailedInfoAdapter() {
-        binding.rvDetailedWeatherInfoList.addItemDecoration(DividerItemDecoration(
+        binding.rvDetailedWeatherInfoList.addItemDecoration(
+            DividerItemDecoration(
             requireContext(),
             RecyclerView.VERTICAL
-        ))
+        )
+        )
         weatherDetailedInfoAdapter = WeatherDetailedInfoAdapter()
         binding.rvDetailedWeatherInfoList.adapter = weatherDetailedInfoAdapter
     }
@@ -83,9 +76,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         onSetHourlyForecastAdapter()
         onSetWeatherDetailedInfoAdapter()
 
-       /* binding.svWeatherFragmentScroll.viewTreeObserver.addOnScrollChangedListener(
-            ScrollPositionObserver()
-        )*/
+        /* binding.svWeatherFragmentScroll.viewTreeObserver.addOnScrollChangedListener(
+             ScrollPositionObserver()
+         )*/
         viewModel.getWeather5DaysForecast(args.key?:"").observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Resource.Status.LOADING -> {
@@ -118,7 +111,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.tvWeatherFragmentPhrase.text = weatherHourItem.iconPhrase
             binding.tvWeatherFragmentTopPhrase.text = weatherHourItem.iconPhrase
 
-            Glide.with(this).load("https://weather.ls.hereapi.com/static/weather/icon/${weatherHourItem.weatherIcon}.png?apikey=${Constants.API_KEY}").error(R.drawable.ic_broken_image_white)
+            Glide.with(this).load("https://weather.ls.hereapi.com/static/weather/icon/${weatherHourItem.weatherIcon}.png?apikey=${Constants.API_KEY}").error(
+                R.drawable.ic_broken_image_white)
                 .into(binding.ivWeatherFragmentIcon)
 
             hourlyForecastAdapter.updateHourlyForecast(dataList)

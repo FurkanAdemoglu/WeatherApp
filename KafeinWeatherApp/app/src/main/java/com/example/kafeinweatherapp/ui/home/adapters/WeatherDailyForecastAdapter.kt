@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.example.kafeinweatherapp.model.entity.fivedayresponse.DailyForecast
 import com.example.kafeinweatherapp.model.entity.fivedayresponse.WeatherFiveDayResponse
+import com.example.kafeinweatherapp.utils.Constants
 import com.example.kafeinweatherapp.utils.Constants.API_KEY
 
 class WeatherDailyForecastAdapter : RecyclerView.Adapter<WeatherDailyForecastAdapter.ViewHolder>() {
@@ -57,15 +58,24 @@ class WeatherDailyForecastAdapter : RecyclerView.Adapter<WeatherDailyForecastAda
             tvDailyForecastDate.text = dayForecast.date
             tvDailyForecastDayTemp.text ="${dayForecast.temperature.maximum.value} ${dayForecast.temperature.maximum.unit}"
             tvDailyForecastNightTemp.text = "${dayForecast.temperature.minimum.value} ${dayForecast.temperature.minimum.unit}"
+            itemView.let {
                 Glide.with(itemView)
-                    .load("https://weather.ls.hereapi.com/static/weather/icon/${dayForecast.day.icon}.png?apikey=${API_KEY}")
+                    .load( "https://weather.ls.hereapi.com/static/weather/icon/${dayForecast.day.icon}.png?apikey=${Constants.API_KEY}")
+                    .fitCenter()
+                    .error(R.drawable.ic_broken_image_white)
                     .into(ivDailyForecastDayIcon)
 
-            ivDailyForecastNightIcon.let {
-                Glide.with(it)
-                    .load(dayForecast.night.icon)
-                    .into(ivDailyForecastDayIcon)
+                Glide.with(itemView)
+                    .load( "https://weather.ls.hereapi.com/static/weather/icon/${dayForecast.night.icon}.png?apikey=${Constants.API_KEY}")
+                    .fitCenter()
+                    .error(R.drawable.ic_broken_image_white)
+                    .into(ivDailyForecastNightIcon)
             }
+
+
+
+
+
 
             rowDailyForecastLayout.setOnClickListener {
                 onItemClick?.invoke(dayForecast.mobileLink)

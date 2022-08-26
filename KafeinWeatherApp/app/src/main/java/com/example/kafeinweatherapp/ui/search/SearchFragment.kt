@@ -7,6 +7,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import com.example.kafeinweatherapp.databinding.FragmentSearchBinding
@@ -45,9 +46,7 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
 
                 return true
             }
-
         })
-
     }
     private fun setupRecyclerView(){
         listAdapter= SearchAdapter()
@@ -58,12 +57,11 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
         }
     }
 
-
     private fun onSuccessData(response:SearchResponse?){
         listAdapter.setOnItemClickListener(object : ICityClickListener {
-
             override fun onClick(name: SearchResponseItem) {
-
+                val action =SearchFragmentDirections.actionSplashFragmentToDetailFragment(name.key)
+                findNavController().navigate(action)
             }
         })
         listAdapter.differ.submitList(response)

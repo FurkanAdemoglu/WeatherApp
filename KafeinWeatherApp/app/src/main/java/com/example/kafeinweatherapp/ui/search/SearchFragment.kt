@@ -31,18 +31,7 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchedWordAdapter = SearchedWordAdapter()
-        binding.searchedWords.apply {
-            adapter=searchedWordAdapter
-            layoutManager = LinearLayoutManager(activity)
-
-        }
-        searchedWordAdapter.setOnItemClickListener(object : IWordClickListener{
-            override fun onClick(name: String) {
-                binding.etSearch.setQuery(name,true)
-            }
-
-        })
+        setupSearchedWordRecyclerView()
         setupRecyclerView()
         binding.etSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -73,8 +62,6 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
             searchedWordAdapter.submitList(it)
         })
 
-
-
     }
     private fun setupRecyclerView(){
         listAdapter= SearchAdapter()
@@ -83,7 +70,21 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
             layoutManager= LinearLayoutManager(activity)
 
         }
+    }
 
+    private fun setupSearchedWordRecyclerView(){
+        searchedWordAdapter = SearchedWordAdapter()
+        binding.searchedWords.apply {
+            adapter=searchedWordAdapter
+            layoutManager = LinearLayoutManager(activity)
+
+        }
+        searchedWordAdapter.setOnItemClickListener(object : IWordClickListener{
+            override fun onClick(name: String) {
+                binding.etSearch.setQuery(name,true)
+            }
+
+        })
     }
 
     private fun onSuccessData(response:SearchResponse?){

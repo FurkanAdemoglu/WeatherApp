@@ -1,8 +1,10 @@
 package com.example.kafeinweatherapp.repository
 
+import com.example.kafeinweatherapp.database.WordDao
 import com.example.kafeinweatherapp.model.entity.fivedayresponse.WeatherFiveDayResponse
 import com.example.kafeinweatherapp.model.entity.geopointresponse.GeoPositionResponse
 import com.example.kafeinweatherapp.model.entity.search.SearchResponse
+import com.example.kafeinweatherapp.model.entity.searchedwords.Word
 import com.example.kafeinweatherapp.model.entity.twelvehourresponse.WeatherTwelveHourResponse
 import com.example.kafeinweatherapp.model.remote.RemoteDataSource
 
@@ -12,6 +14,7 @@ import javax.inject.Inject
 
 class ApiRepository @Inject constructor(
     private var remoteDataSource: RemoteDataSource,
+    private var wordDao: WordDao
 ) {
     fun getLocationData(location:String) = performNetworkOperation {
         remoteDataSource.getLocationData(location)
@@ -28,6 +31,12 @@ class ApiRepository @Inject constructor(
      fun search(search:String)= performNetworkOperation {
         remoteDataSource.search(search = search)
     }
+
+    suspend fun insertWord(word:String){
+        wordDao.insert(Word(word = word))
+    }
+
+    val allWords: Flow<List<Word>> = wordDao.getAlphabetizedWords()
 
 
 

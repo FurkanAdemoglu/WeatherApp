@@ -2,7 +2,7 @@ package com.example.kafeinweatherapp.utils
 
 object Constants {
 
-    const val API_KEY = "GRrMqYTLUuTOLfvgY6O9nmh1bQV10ELI"
+    const val API_KEY = "APQywQbPC2owzUmQ9eww4SSUDIAU0rA1"
     //GRrMqYTLUuTOLfvgY6O9nmh1bQV10ELI
     //APQywQbPC2owzUmQ9eww4SSUDIAU0rA1
     //2qAQW6aSIsPEwILOKEziRBjvmRVcnHy2

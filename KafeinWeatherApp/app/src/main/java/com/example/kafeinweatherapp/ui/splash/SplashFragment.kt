@@ -10,6 +10,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -19,6 +20,8 @@ import com.example.kafeinweatherapp.model.entity.geopointresponse.GeoPositionRes
 import com.example.kafeinweatherapp.model.local.SharedPrefManager
 import com.example.kafeinweatherapp.ui.base.BaseFragment
 import com.example.kafeinweatherapp.utils.Resource
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -28,10 +31,12 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
 
     private val viewModel: SplashViewModel by viewModels()
     private lateinit var locationManager: LocationManager
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
     locationManager=activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
 
@@ -102,18 +107,23 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         dialog.show()
     }
     private fun onPermissionGranted(){
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
-            val providers:List<String> = locationManager.getProviders(true)
-            var bestLocation: Location? = null
-            for (provider in providers){
-                val l : Location =locationManager.getLastKnownLocation(provider) ?: continue
-                if (bestLocation==null || l.accuracy<bestLocation.accuracy){
-                    bestLocation = l
-                }
-            }
-            viewModel.location=bestLocation
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            return
         }
-        sendRequest()
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                viewModel.location=location
+                sendRequest()
+            }
+
     }
 
     private fun checkPermissionGranted() {

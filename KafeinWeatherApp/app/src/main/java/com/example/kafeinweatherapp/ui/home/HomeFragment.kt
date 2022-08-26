@@ -82,7 +82,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         onSetDailyForecastAdapter()
         onSetHourlyForecastAdapter()
         onSetWeatherDetailedInfoAdapter()
-
+        binding.tvWeatherFragmentCity.text = args.cityName
+        binding.tvWeatherFragmentTopCity.text = args.cityName
        /* binding.svWeatherFragmentScroll.viewTreeObserver.addOnScrollChangedListener(
             ScrollPositionObserver()
         )*/
@@ -123,7 +124,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             hourlyForecastAdapter.updateHourlyForecast(dataList)
             hourlyForecastAdapter.onItemClick = { onOpenUrl(it) }
-
+            weatherDetailedInfoHashMap["humidity"] = weatherHourItem.relativeHumidity.toString()
+            weatherDetailedInfoHashMap["realFeelTemperature"] = "${weatherHourItem.realFeelTemperature.value} ${weatherHourItem.realFeelTemperature.unit}"
+            weatherDetailedInfoHashMap["uvIndex"] = weatherHourItem.uVIndexText
+            weatherDetailedInfoAdapter.updateData(weatherDetailedInfoHashMap)
 
         }
     }

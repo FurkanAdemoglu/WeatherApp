@@ -76,7 +76,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     }
 
     private fun success(data: GeoPositionResponse?){
-        val action=SplashFragmentDirections.actionSplashFragmentToHomeFragment(data?.key?:"")
+        val action=SplashFragmentDirections.actionSplashFragmentToHomeFragment(data?.key?:"",data?.localizedName)
         findNavController().navigate(action)
     }
 

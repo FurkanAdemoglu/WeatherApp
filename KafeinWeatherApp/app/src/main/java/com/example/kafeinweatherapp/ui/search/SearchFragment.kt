@@ -38,8 +38,8 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
 
         }
         searchedWordAdapter.setOnItemClickListener(object : IWordClickListener{
-            override fun onClick(name: Word) {
-                binding.etSearch.setQuery(name.word,true)
+            override fun onClick(name: String) {
+                binding.etSearch.setQuery(name,true)
             }
 
         })

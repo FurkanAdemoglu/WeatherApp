@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kafeinweatherapp.R
 import com.example.kafeinweatherapp.model.entity.searchedwords.Word
+import kotlinx.android.synthetic.main.item_searched_words.view.*
 
 class SearchedWordAdapter : ListAdapter<Word, SearchedWordAdapter.WordViewHolder>(WordsComparator()) {
     private var listener: IWordClickListener? = null
@@ -19,11 +20,14 @@ class SearchedWordAdapter : ListAdapter<Word, SearchedWordAdapter.WordViewHolder
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current.word)
+        holder.itemView.searchedWordCardView.setOnClickListener {
+            listener?.onClick(current.word)
+        }
     }
 
     class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val wordItemView: TextView = itemView.findViewById(R.id.textView)
-
+      //  private val searchedWordCardView: TextView = itemView.findViewById(R.id.searchedWordCardView)
         fun bind(text: String?) {
             wordItemView.text = text
         }

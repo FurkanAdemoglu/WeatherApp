@@ -97,7 +97,7 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
         }
         listAdapter.setOnItemClickListener(object : ICityClickListener {
             override fun onClick(name: SearchResponseItem) {
-                val action =SearchFragmentDirections.actionSplashFragmentToDetailFragment(name.key)
+                val action =SearchFragmentDirections.actionSplashFragmentToDetailFragment(name.key,name.localizedName)
                 findNavController().navigate(action)
             }
         })

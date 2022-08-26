@@ -24,4 +24,7 @@ class HomeViewModel  @Inject constructor(
 
     fun getWeather12HourlyForecast(): LiveData<Resource<WeatherTwelveHourResponse>> = apiRepository.getWeather12HourlyForecast(localDataSource.getKey()?:"")
 
+    fun getWeather5DaysForecastDetail(key:String): LiveData<Resource<WeatherFiveDayResponse>> = apiRepository.getWeather5DaysForecast(key)
+
+    fun getWeather12HourlyForecastDetail(key:String): LiveData<Resource<WeatherTwelveHourResponse>> = apiRepository.getWeather12HourlyForecast(key)
 }

@@ -105,13 +105,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         })
 
-        binding.srWeatherFragmentRefresh.setOnRefreshListener {
-
-        }
 
     }
     private fun showWeatherDataInfo(dataList: WeatherTwelveHourResponse?) {
-        binding.srWeatherFragmentRefresh.isRefreshing = false
         if (dataList?.isNotEmpty()==true) {
             val weatherHourItem = dataList[0]
             binding.tvWeatherFragmentTemperature.text = weatherHourItem.temperature.value.toString()
@@ -132,7 +128,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun showWeatherDailyDataInfo(weather5DaysForecast: WeatherFiveDayResponse?) {
-        binding.srWeatherFragmentRefresh.isRefreshing = false
         val dataList = weather5DaysForecast?.dailyForecasts
         if (dataList?.isNotEmpty() == true) {
             dailyForecastAdapter.updateDailyForecast(dataList)
@@ -158,25 +153,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         startActivity(intent)
     }
 
-    /*private inner class ScrollPositionObserver : ViewTreeObserver.OnScrollChangedListener {
 
-        private val mTopLayoutHeight: Int =
-            resources.getDimensionPixelSize(R.dimen.top_layout_height)
-
-        override fun onScrollChanged() {
-            val scrollY = binding.svWeatherFragmentScroll.scrollY.coerceAtLeast(0)
-                .coerceAtMost(mTopLayoutHeight)
-
-            binding.layoutWeatherFragmentTopScroll.translationY =
-                (scrollY / 2).toFloat()
-
-            val alpha = 100 * scrollY / mTopLayoutHeight.toFloat()
-
-            binding.layoutWeatherFragmentTop.alpha = alpha
-            binding.layoutWeatherFragmentTop.visibility = View.VISIBLE
-
-        }
-    }*/
 
 
 }

@@ -16,6 +16,7 @@ import com.example.kafeinweatherapp.databinding.FragmentDetailBinding
 import com.example.kafeinweatherapp.databinding.FragmentHomeBinding
 import com.example.kafeinweatherapp.model.entity.fivedayresponse.WeatherFiveDayResponse
 import com.example.kafeinweatherapp.model.entity.twelvehourresponse.WeatherTwelveHourResponse
+import com.example.kafeinweatherapp.model.local.SharedPrefManager
 import com.example.kafeinweatherapp.ui.base.BaseFragment
 import com.example.kafeinweatherapp.ui.home.HomeViewModel
 import com.example.kafeinweatherapp.ui.home.adapters.WeatherDailyForecastAdapter
@@ -75,10 +76,10 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         onSetHourlyForecastAdapter()
         onSetWeatherDetailedInfoAdapter()
 
-        /* binding.svWeatherFragmentScroll.viewTreeObserver.addOnScrollChangedListener(
-             ScrollPositionObserver()
-         )*/
-        viewModel.getWeather5DaysForecast().observe(viewLifecycleOwner, Observer {
+
+        binding.tvWeatherFragmentCity.text = args.cityName
+        binding.tvWeatherFragmentTopCity.text = args.cityName
+        viewModel.getWeather5DaysForecastDetail(args.key?:"").observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Resource.Status.LOADING -> {
                 }
@@ -87,7 +88,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             }
 
         })
-        viewModel.getWeather12HourlyForecast().observe(viewLifecycleOwner, Observer {
+        viewModel.getWeather12HourlyForecastDetail(args.key?:"").observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Resource.Status.LOADING -> {
                 }
@@ -97,13 +98,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
 
         })
 
-        binding.srWeatherFragmentRefresh.setOnRefreshListener {
-
-        }
 
     }
     private fun showWeatherDataInfo(dataList: WeatherTwelveHourResponse?) {
-        binding.srWeatherFragmentRefresh.isRefreshing = false
         if (dataList?.isNotEmpty()==true) {
             val weatherHourItem = dataList[0]
             binding.tvWeatherFragmentTemperature.text = weatherHourItem.temperature.value.toString()
@@ -122,7 +119,6 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
     }
 
     private fun showWeatherDailyDataInfo(weather5DaysForecast: WeatherFiveDayResponse?) {
-        binding.srWeatherFragmentRefresh.isRefreshing = false
         val dataList = weather5DaysForecast?.dailyForecasts
         if (dataList?.isNotEmpty() == true) {
             dailyForecastAdapter.updateDailyForecast(dataList)
@@ -148,25 +144,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         startActivity(intent)
     }
 
-    /*private inner class ScrollPositionObserver : ViewTreeObserver.OnScrollChangedListener {
 
-        private val mTopLayoutHeight: Int =
-            resources.getDimensionPixelSize(R.dimen.top_layout_height)
-
-        override fun onScrollChanged() {
-            val scrollY = binding.svWeatherFragmentScroll.scrollY.coerceAtLeast(0)
-                .coerceAtMost(mTopLayoutHeight)
-
-            binding.layoutWeatherFragmentTopScroll.translationY =
-                (scrollY / 2).toFloat()
-
-            val alpha = 100 * scrollY / mTopLayoutHeight.toFloat()
-
-            binding.layoutWeatherFragmentTop.alpha = alpha
-            binding.layoutWeatherFragmentTop.visibility = View.VISIBLE
-
-        }
-    }*/
 
 
 }

@@ -1,11 +1,12 @@
 package com.example.kafeinweatherapp.model.remote
 
-import com.example.kafeinweatherapp.utils.BaseDataSource
+
+import com.example.kafeinweatherapp.utils.BaseRemoteDataSource
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
     private val apiService: ApiService
-) : BaseDataSource() {
+) : BaseRemoteDataSource() {
 
     suspend fun getLocationData(location:String) = getResult {
         apiService.getLocationData(location = location)

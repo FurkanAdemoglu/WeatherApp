@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import kotlinx.coroutines.Dispatchers
 
-fun <T> performNetworkOperation(call: suspend () -> Resource<T>): LiveData<Resource<T>> {
+/*fun <T> performNetworkOperation(call: suspend () -> Resource<T>): LiveData<Resource<T>> {
     return liveData(Dispatchers.IO) {
         emit(Resource.loading())
         val networkCall = call.invoke()
@@ -19,4 +19,4 @@ fun <T> performNetworkOperation(call: suspend () -> Resource<T>): LiveData<Resou
             )
         }
     }
-}
+}*/

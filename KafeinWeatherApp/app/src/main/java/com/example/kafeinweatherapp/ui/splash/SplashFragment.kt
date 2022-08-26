@@ -19,7 +19,6 @@ import com.example.kafeinweatherapp.databinding.FragmentSplashBinding
 import com.example.kafeinweatherapp.model.entity.geopointresponse.GeoPositionResponse
 import com.example.kafeinweatherapp.model.local.SharedPrefManager
 import com.example.kafeinweatherapp.ui.base.BaseFragment
-import com.example.kafeinweatherapp.utils.Resource
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +36,18 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         initViews()
     locationManager=activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        viewModel.liveData.observe(viewLifecycleOwner,::onStateChanged)
+    }
+
+    fun onStateChanged(state:SplashViewModel.State){
+        when(state){
+            is SplashViewModel.State.OnError->{
+                showError(state.errorMessage)
+            }
+            is SplashViewModel.State.OnSuccess->{
+                success(state.data)
+            }
+        }
     }
 
 
@@ -69,16 +80,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     }
 
     private fun sendRequest(){
-
-        viewModel.getLocationData("${viewModel.location?.latitude ?: 41},${viewModel.location?.longitude ?: 28}").observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Resource.Status.LOADING -> {
-                }
-                Resource.Status.SUCCESS -> success(it.data)
-                Resource.Status.ERROR -> showError(it.message)
-            }
-
-        })
+        viewModel.getLocationData("${viewModel.location?.latitude ?: 41},${viewModel.location?.longitude ?: 28}")
     }
 
     override fun onRequestPermissionsResult(

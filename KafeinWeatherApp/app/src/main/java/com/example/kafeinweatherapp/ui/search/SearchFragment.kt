@@ -15,9 +15,9 @@ import com.example.kafeinweatherapp.model.entity.search.SearchResponse
 import com.example.kafeinweatherapp.model.entity.search.SearchResponseItem
 import com.example.kafeinweatherapp.model.entity.searchedwords.Word
 import com.example.kafeinweatherapp.ui.base.BaseFragment
+import com.example.kafeinweatherapp.ui.detail.DetailViewModel
 import com.example.kafeinweatherapp.ui.home.HomeViewModel
 import com.example.kafeinweatherapp.ui.splash.SplashViewModel
-import com.example.kafeinweatherapp.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -33,16 +33,10 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
         super.onViewCreated(view, savedInstanceState)
         setupSearchedWordRecyclerView()
         setupRecyclerView()
+        viewModel.liveData.observe(viewLifecycleOwner,::onStateChanged)
         binding.etSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.search(query?:"").observe(viewLifecycleOwner, Observer {
-                    when (it.status) {
-                        Resource.Status.LOADING -> {
-                        }
-                        Resource.Status.SUCCESS -> onSuccessData(it.data)
-                        Resource.Status.ERROR -> showError(it.message)
-                    }
-                })
+                viewModel.search(query?:"")
                 return true
             }
 
@@ -62,6 +56,18 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
             searchedWordAdapter.submitList(it)
         })
 
+    }
+
+    fun onStateChanged(state: SearchViewModel.State){
+        when(state){
+            is SearchViewModel.State.OnError->{
+                showError(state.errorMessage)
+            }
+            is SearchViewModel.State.OnSearchResponseSuccess->{
+                onSuccessData(state.data)
+            }
+
+        }
     }
     private fun setupRecyclerView(){
         listAdapter= SearchAdapter()

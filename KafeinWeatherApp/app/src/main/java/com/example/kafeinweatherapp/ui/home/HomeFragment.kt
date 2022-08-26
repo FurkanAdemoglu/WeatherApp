@@ -30,8 +30,8 @@ import com.example.kafeinweatherapp.ui.base.BaseFragment
 import com.example.kafeinweatherapp.ui.home.adapters.WeatherDailyForecastAdapter
 import com.example.kafeinweatherapp.ui.home.adapters.WeatherDetailedInfoAdapter
 import com.example.kafeinweatherapp.ui.home.adapters.WeatherHourlyForecastAdapter
+import com.example.kafeinweatherapp.ui.splash.SplashViewModel
 import com.example.kafeinweatherapp.utils.Constants
-import com.example.kafeinweatherapp.utils.Resource
 import com.google.android.gms.location.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -84,29 +84,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         onSetWeatherDetailedInfoAdapter()
         binding.tvWeatherFragmentCity.text = SharedPrefManager(requireContext()).getCity()
         binding.tvWeatherFragmentTopCity.text = SharedPrefManager(requireContext()).getCity()
-       /* binding.svWeatherFragmentScroll.viewTreeObserver.addOnScrollChangedListener(
-            ScrollPositionObserver()
-        )*/
-        viewModel.getWeather5DaysForecast().observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Resource.Status.LOADING -> {
-                }
-                Resource.Status.SUCCESS -> showWeatherDailyDataInfo(it.data)
-                Resource.Status.ERROR -> showError(it.message)
-            }
-
-        })
-        viewModel.getWeather12HourlyForecast().observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Resource.Status.LOADING -> {}
-                Resource.Status.SUCCESS -> showWeatherDataInfo(it.data)
-                Resource.Status.ERROR -> showError(it.message)
-            }
-
-        })
+        viewModel.getWeather5DaysForecast()
+        viewModel.getWeather12HourlyForecast()
+        viewModel.liveData.observe(viewLifecycleOwner,::onStateChanged)
 
 
     }
+    fun onStateChanged(state: HomeViewModel.State){
+        when(state){
+            is HomeViewModel.State.OnError->{
+                showError(state.errorMessage)
+            }
+            is HomeViewModel.State.OnWeatherFiveDaySuccess->{
+                showWeatherDailyDataInfo(state.data)
+            }
+            is HomeViewModel.State.OnWeatherTwelveHourSuccess->{
+                showWeatherDataInfo(state.data)
+            }
+        }
+    }
+
     private fun showWeatherDataInfo(dataList: WeatherTwelveHourResponse?) {
         if (dataList?.isNotEmpty()==true) {
             val weatherHourItem = dataList[0]

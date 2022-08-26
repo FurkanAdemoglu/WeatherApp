@@ -1,9 +1,11 @@
 package com.example.kafeinweatherapp.utils
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import retrofit2.Response
 
 
-abstract class BaseDataSource {
+/*abstract class BaseDataSource {
     protected suspend fun <T> getResult(call: suspend () -> Response<T>): Resource<T> {
         try {
             val response = call()
@@ -20,5 +22,23 @@ abstract class BaseDataSource {
 
     private fun <T> error(message: String): Resource<T> {
         return Resource.error("Network error: $message")
+    }
+}*/
+
+open class BaseRemoteDataSource {
+    protected suspend fun <T> getResult(call: suspend () -> Response<T>): Flow<DataState<T>> {
+        return flow<DataState<T>> {
+            val response = call()
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null) emit(DataState.Success(body))
+            } else {
+                emit(DataState.Error("${response.code().toLong()}"+ response.errorBody().toString()))
+            }
+        }.catch {
+            emit(DataState.Error( it.message ?: it.toString()))
+        }.onStart {
+            emit(DataState.Loading())
+        }.flowOn(Dispatchers.IO)
     }
 }

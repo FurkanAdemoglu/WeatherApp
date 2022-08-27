@@ -23,6 +23,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 import pub.devrel.easypermissions.EasyPermissions
+import kotlin.system.exitProcess
 
 
 @AndroidEntryPoint
@@ -118,6 +119,10 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             ) != PackageManager.PERMISSION_GRANTED
         ) {
 
+
+            /*activity?.finish()
+            exitProcess(0)*/
+            sendRequest()
             return
         }
         fusedLocationClient.lastLocation
@@ -137,7 +142,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             ) {
                 EasyPermissions.requestPermissions(
                     this,
-                    "Hava durumu için konuma izin vermelisiniz",
+                    "Bulunduğunuz konumdaki hava durumu için konuma izin vermelisiniz.",
                     200,
                     Manifest.permission.ACCESS_FINE_LOCATION
                 )

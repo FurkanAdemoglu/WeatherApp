@@ -82,7 +82,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     }
 
     private fun sendRequest(location:Location?){
-        viewModel.getLocationData("${location?.latitude},${location?.longitude}")
+        viewModel.getLocationData("${location?.latitude?:41},${location?.longitude?:28}")
     }
 
     override fun onRequestPermissionsResult(

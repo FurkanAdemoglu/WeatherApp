@@ -18,6 +18,7 @@ import com.example.kafeinweatherapp.ui.base.BaseFragment
 import com.example.kafeinweatherapp.ui.detail.DetailViewModel
 import com.example.kafeinweatherapp.ui.home.HomeViewModel
 import com.example.kafeinweatherapp.ui.splash.SplashViewModel
+import com.example.kafeinweatherapp.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -35,8 +36,10 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(FragmentSearchBinding:
         setupRecyclerView()
         viewModel.liveData.observe(viewLifecycleOwner,::onStateChanged)
         binding.etSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.search(query?:"")
+                hideKeyboard()
                 return true
             }
 

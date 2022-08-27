@@ -73,15 +73,16 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        sendRequest()
+    onPermissionGranted()
+    // sendRequest(viewModel.location)
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         onPermissionGranted()
     }
 
-    private fun sendRequest(){
-        viewModel.getLocationData("${viewModel.location?.latitude ?: 41},${viewModel.location?.longitude ?: 28}")
+    private fun sendRequest(location:Location?){
+        viewModel.getLocationData("${location?.latitude},${location?.longitude}")
     }
 
     override fun onRequestPermissionsResult(
@@ -122,13 +123,13 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
 
             /*activity?.finish()
             exitProcess(0)*/
-            sendRequest()
+            //sendRequest()
             return
         }
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location : Location? ->
                 viewModel.location=location
-                sendRequest()
+                sendRequest(location)
             }
 
     }

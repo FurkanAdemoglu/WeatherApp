@@ -34,7 +34,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
     private lateinit var hourlyForecastAdapter: WeatherHourlyForecastAdapter
     private lateinit var dailyForecastAdapter: WeatherDailyForecastAdapter
     private lateinit var weatherDetailedInfoAdapter: WeatherDetailedInfoAdapter
-
+    private val weatherDetailedInfoHashMap: HashMap<String, String> = HashMap()
     private fun onSetWeatherDetailedInfoAdapter() {
         binding.rvDetailedWeatherInfoList.addItemDecoration(
             DividerItemDecoration(
@@ -111,7 +111,10 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             hourlyForecastAdapter.updateHourlyForecast(dataList)
             hourlyForecastAdapter.onItemClick = { onOpenUrl(it) }
 
-
+            weatherDetailedInfoHashMap["humidity"] = weatherHourItem.relativeHumidity.toString()
+            weatherDetailedInfoHashMap["realFeelTemperature"] = "${weatherHourItem.realFeelTemperature.value} ${weatherHourItem.realFeelTemperature.unit}"
+            weatherDetailedInfoHashMap["uvIndex"] = weatherHourItem.uVIndexText
+            weatherDetailedInfoAdapter.updateData(weatherDetailedInfoHashMap)
         }
     }
 

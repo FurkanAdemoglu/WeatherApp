@@ -82,7 +82,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     }
 
     private fun sendRequest(location:Location?){
-        viewModel.getLocationData("${location?.latitude?:41},${location?.longitude?:28}")
+        viewModel.getLocationData("${location?.latitude?:SharedPrefManager(requireContext()).getLatitude()},${location?.longitude?:SharedPrefManager(requireContext()).getLongtitude()}")
     }
 
     override fun onRequestPermissionsResult(
@@ -129,6 +129,10 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location : Location? ->
                 viewModel.location=location
+                if (location?.latitude.toString()!="null"){
+                    SharedPrefManager(requireContext()).saveLatitude(location?.latitude.toString())
+                    SharedPrefManager(requireContext()).saveLongtitude(location?.longitude.toString())
+                }
                 sendRequest(location)
             }
 

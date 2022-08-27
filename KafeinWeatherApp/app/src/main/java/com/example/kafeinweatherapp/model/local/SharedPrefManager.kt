@@ -7,6 +7,8 @@ class SharedPrefManager(context:Context) {
     companion object {
         const val KEY = "com.example.universityapp.model.local.KEY"
         const val CITY = "com.example.universityapp.model.local.CITY"
+        const val LATITUDE = "com.example.universityapp.model.local.LATITUDE"
+        const val LONGTITUDE = "com.example.universityapp.model.local.LONGTITUDE"
 
     }
     private val sharedPreferences: SharedPreferences =
@@ -25,5 +27,20 @@ class SharedPrefManager(context:Context) {
     fun getCity(): String? {
         return sharedPreferences.getString(CITY, "")
     }
+
+    fun saveLatitude(latitude:String){
+        sharedPreferences.edit().putString(LATITUDE, latitude?:"41").apply()
+    }
+    fun getLatitude(): String? {
+        return sharedPreferences.getString(LATITUDE, "41")
+    }
+    fun saveLongtitude(latitude:String){
+        sharedPreferences.edit().putString(LONGTITUDE, latitude?:"28").apply()
+    }
+    fun getLongtitude(): String? {
+        return sharedPreferences.getString(LONGTITUDE, "28")
+    }
+
+
 
 }

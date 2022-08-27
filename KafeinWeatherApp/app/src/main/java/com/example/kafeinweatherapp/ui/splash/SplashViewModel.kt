@@ -20,7 +20,6 @@ class SplashViewModel @Inject constructor(
 
     val liveData = MutableLiveData<State>()
 
-    //fun getLocationData(location:String): LiveData<Resource<GeoPositionResponse>> = apiRepository.getLocationData(location)
 
      fun getLocationData(location:String){
         viewModelScope.launch {

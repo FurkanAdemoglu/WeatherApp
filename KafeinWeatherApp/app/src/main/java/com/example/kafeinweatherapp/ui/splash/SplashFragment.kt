@@ -121,9 +121,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         ) {
 
 
-            /*activity?.finish()
-            exitProcess(0)*/
-            //sendRequest()
+            activity?.finish()
+            exitProcess(0)
+            //sendRequest(Location.)
             return
         }
         fusedLocationClient.lastLocation
